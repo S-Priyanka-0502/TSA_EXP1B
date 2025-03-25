@@ -10,69 +10,73 @@ To perform regular differncing,seasonal adjustment and log transformatio on inte
 4. Plot the data according to need, before and after regular differncing,seasonal adjustment,log transformation.
 5. Display the overall results.
 ### PROGRAM:
-```
+## Import the necessary Packages
+```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from statsmodels.tsa.seasonal import seasonal_decompose
-
-# Load the data
-data = pd.read_csv("ECOMM DATA.csv")
-# Create DataFrame
-df = pd.DataFrame(data)
-
-# Regular differencing
-df['Regular Difference'] = df['Sales'].diff()
-
-# Seasonal adjustment
-result = seasonal_decompose(df['Sales'], model='additive', period=12)
-df['Seasonal Adjustment'] = result.resid
-
-# Log transformation
-df['Log Transformation'] = np.log(df['Sales'])
-
-# Plotting
-plt.figure(figsize=(14, 10))
-
-plt.subplot(4, 1, 1)
-plt.plot(df['Sales'], label='Original')
-plt.legend(loc='best')
-plt.title('Original Data')
-
-plt.subplot(4, 1, 2)
-plt.plot(df['Regular Difference'], label='Regular Difference')
-plt.legend(loc='best')
-plt.title('Regular Differencing')
-
-plt.subplot(4, 1, 3)
-plt.plot(df['Seasonal Adjustment'], label='Seasonal Adjustment')
-plt.legend(loc='best')
-plt.title('Seasonal Adjustment')
-
-plt.subplot(4, 1, 4)
-plt.plot(df['Log Transformation'], label='Log Transformation')
-plt.legend(loc='best')
-plt.title('Log Transformation')
-
-plt.tight_layout()
-plt.show()
 ```
+## Load the dataset
+```python
+data=pd.read_csv('/content/petrol_price.csv')
+```
+## Plot the data without conversion
+```python
+plt.figure(figsize=(10,5))
+X=data['date']
+y=data['Tamil Nadu']
+plt.xlabel('Date')
+plt.ylabel('Petrol Price')
+plt.plot(X,y)
+```
+## Regular Differencing
+```python
+data['diff']=data['Tamil Nadu'].diff()
+plt.figure(figsize=(10,5))
+x=data['date']
+y=data['diff']
+plt.xlabel('Date')
+plt.ylabel('Petrol Price')
+plt.plot(x,y)
+```
+## Seasonal Adjustment
+```python
+data3=data
+data3['seasonal']=data3['Tamil Nadu']-data3['Tamil Nadu'].rolling(window=3).mean()
+plt.figure(figsize=(10,5))
+x=data3['date']
+y=data3['seasonal']
+plt.xlabel('Date')
+plt.ylabel('Petrol Price')
+plt.plot(x,y)
+```
+## Log Transformation
+```python
+data2=data
+data2['log']=np.log(data2['Tamil Nadu']).dropna()
+plt.figure(figsize=(10,5))
+x=data2['date']
+y=data2['log']
+plt.xlabel('Date')
+plt.ylabel('Petrol Price')
+plt.plot(x,y)
+```
+
 ### OUTPUT:
 
+WITHOUT CONVERSION:
+![image](https://github.com/user-attachments/assets/0f6cac38-abf1-4fc8-9a83-54c67e22ad16)
+
 REGULAR DIFFERENCING:
-
-  ![image](https://github.com/user-attachments/assets/9a478098-abb1-4774-a9a7-54538f9ed56b)
-
+![image](https://github.com/user-attachments/assets/63917bc4-d982-4f57-a77d-63d851314a75)
 
 SEASONAL ADJUSTMENT:
-![image](https://github.com/user-attachments/assets/15069f35-9f7a-4196-8240-f0ef63f1ada3)
-
+![image](https://github.com/user-attachments/assets/2938f359-941b-4371-ba9f-512772bdb23a)
 
 LOG TRANSFORMATION:
-
-![image](https://github.com/user-attachments/assets/eba3099b-696d-448b-a0ef-79584b7355be)
+![image](https://github.com/user-attachments/assets/d3710f71-69ac-4f21-b89e-0e76c1823479)
 
 
 ### RESULT:
-Thus we have created the python code for the conversion of non stationary to stationary data on international airline passenger
+Thus we have created the python code for the conversion of non stationary to stationary data on petrol price
 data.
